@@ -47,7 +47,7 @@ typedef id AFBackgroundTaskIdentifier;
 static dispatch_group_t url_request_operation_completion_group() {
     static dispatch_group_t af_url_request_operation_completion_group;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^ {
         af_url_request_operation_completion_group = dispatch_group_create();
     });
 
@@ -57,7 +57,7 @@ static dispatch_group_t url_request_operation_completion_group() {
 static dispatch_queue_t url_request_operation_completion_queue() {
     static dispatch_queue_t af_url_request_operation_completion_queue;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^ {
         af_url_request_operation_completion_queue = dispatch_queue_create("com.alamofire.networking.operation.queue", DISPATCH_QUEUE_CONCURRENT );
     });
 
@@ -161,7 +161,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
 + (NSThread *)networkRequestThread {
     static NSThread *_networkRequestThread = nil;
     static dispatch_once_t oncePredicate;
-    dispatch_once(&oncePredicate, ^{
+    dispatch_once(&oncePredicate, ^ {
         _networkRequestThread = [[NSThread alloc] initWithTarget:self selector:@selector(networkRequestThreadEntryPoint:) object:nil];
         [_networkRequestThread start];
     });
@@ -226,11 +226,11 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
             dispatch_queue_t queue = strongSelf.completionQueue ?: dispatch_get_main_queue();
 #pragma clang diagnostic pop
 
-            dispatch_group_async(group, queue, ^{
+            dispatch_group_async(group, queue, ^ {
                 block();
             });
 
-            dispatch_group_notify(group, url_request_operation_completion_queue(), ^{
+            dispatch_group_notify(group, url_request_operation_completion_queue(), ^ {
                 [strongSelf setCompletionBlock:nil];
             });
         }];
@@ -273,7 +273,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     if (!self.backgroundTaskIdentifier) {
         UIApplication *application = [UIApplication sharedApplication];
         __weak __typeof(self)weakSelf = self;
-        self.backgroundTaskIdentifier = [application beginBackgroundTaskWithExpirationHandler:^{
+        self.backgroundTaskIdentifier = [application beginBackgroundTaskWithExpirationHandler:^ {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             
             if (handler) {
@@ -367,7 +367,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     if ([self isExecuting]) {
         [self performSelector:@selector(operationDidPause) onThread:[[self class] networkRequestThread] withObject:nil waitUntilDone:NO modes:[self.runLoopModes allObjects]];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^ {
             NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
             [notificationCenter postNotificationName:AFNetworkingOperationDidFinishNotification object:self];
         });
@@ -445,7 +445,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     }
     [self.lock unlock];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^ {
         [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingOperationDidStartNotification object:self];
     });
 }
@@ -455,7 +455,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     self.state = AFOperationFinishedState;
     [self.lock unlock];
 
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^ {
         [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingOperationDidFinishNotification object:self];
     });
 }
@@ -495,11 +495,10 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
 
 + (NSArray *)batchOfRequestOperations:(NSArray *)operations
                         progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progressBlock
-                      completionBlock:(void (^)(NSArray *operations))completionBlock
-{
+                      completionBlock:(void (^)(NSArray *operations))completionBlock {
     if (!operations || [operations count] == 0) {
-        return @[[NSBlockOperation blockOperationWithBlock:^{
-            dispatch_async(dispatch_get_main_queue(), ^{
+        return @[[NSBlockOperation blockOperationWithBlock:^ {
+            dispatch_async(dispatch_get_main_queue(), ^ {
                 if (completionBlock) {
                     completionBlock(@[]);
                 }
@@ -508,8 +507,8 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     }
 
     __block dispatch_group_t group = dispatch_group_create();
-    NSBlockOperation *batchedOperation = [NSBlockOperation blockOperationWithBlock:^{
-        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+    NSBlockOperation *batchedOperation = [NSBlockOperation blockOperationWithBlock:^ {
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^ {
             if (completionBlock) {
                 completionBlock(operations);
             }
@@ -520,13 +519,13 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
         operation.completionGroup = group;
         void (^originalCompletionBlock)(void) = [operation.completionBlock copy];
         __weak __typeof(operation)weakOperation = operation;
-        operation.completionBlock = ^{
+        operation.completionBlock = ^ {
             __strong __typeof(weakOperation)strongOperation = weakOperation;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wgnu"
             dispatch_queue_t queue = strongOperation.completionQueue ?: dispatch_get_main_queue();
 #pragma clang diagnostic pop
-            dispatch_group_async(group, queue, ^{
+            dispatch_group_async(group, queue, ^ {
                 if (originalCompletionBlock) {
                     originalCompletionBlock();
                 }
@@ -553,8 +552,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
 #pragma mark - NSURLConnectionDelegate
 
 - (void)connection:(NSURLConnection *)connection
-willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-{
+willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
     if (self.authenticationChallenge) {
         self.authenticationChallenge(connection, challenge);
         return;
@@ -586,8 +584,7 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection
              willSendRequest:(NSURLRequest *)request
-            redirectResponse:(NSURLResponse *)redirectResponse
-{
+            redirectResponse:(NSURLResponse *)redirectResponse {
     if (self.redirectResponse) {
         return self.redirectResponse(connection, request, redirectResponse);
     } else {
@@ -598,26 +595,23 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
 - (void)connection:(NSURLConnection __unused *)connection
    didSendBodyData:(NSInteger)bytesWritten
  totalBytesWritten:(NSInteger)totalBytesWritten
-totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
-{
+totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     if (self.uploadProgress) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^ {
             self.uploadProgress((NSUInteger)bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
         });
     }
 }
 
 - (void)connection:(NSURLConnection __unused *)connection
-didReceiveResponse:(NSURLResponse *)response
-{
+didReceiveResponse:(NSURLResponse *)response {
     self.response = response;
     
     [self.outputStream open];
 }
 
 - (void)connection:(NSURLConnection __unused *)connection
-    didReceiveData:(NSData *)data
-{
+    didReceiveData:(NSData *)data {
     NSUInteger length = [data length];
     while (YES) {
         NSInteger totalNumberOfBytesWritten = 0;
@@ -644,7 +638,7 @@ didReceiveResponse:(NSURLResponse *)response
         }
     }
 
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^ {
         self.totalBytesRead += (long long)length;
 
         if (self.downloadProgress) {
@@ -664,8 +658,7 @@ didReceiveResponse:(NSURLResponse *)response
 }
 
 - (void)connection:(NSURLConnection __unused *)connection
-  didFailWithError:(NSError *)error
-{
+  didFailWithError:(NSError *)error {
     self.error = error;
     
     [self.outputStream close];
@@ -676,8 +669,7 @@ didReceiveResponse:(NSURLResponse *)response
 }
 
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection
-                  willCacheResponse:(NSCachedURLResponse *)cachedResponse
-{
+                  willCacheResponse:(NSCachedURLResponse *)cachedResponse {
     if (self.cacheResponse) {
         return self.cacheResponse(connection, cachedResponse);
     } else {

@@ -80,15 +80,14 @@ static BOOL AFErrorOrUnderlyingErrorHasCode(NSError *error, NSInteger code) {
 
 - (BOOL)validateResponse:(NSHTTPURLResponse *)response
                     data:(NSData *)data
-                   error:(NSError * __autoreleasing *)error
-{
+                   error:(NSError * __autoreleasing *)error {
     BOOL responseIsValid = YES;
     NSError *validationError = nil;
 
     if (response && [response isKindOfClass:[NSHTTPURLResponse class]]) {
         if (self.acceptableContentTypes && ![self.acceptableContentTypes containsObject:[response MIMEType]]) {
             if ([data length] > 0) {
-                NSDictionary *userInfo = @{
+                NSDictionary *userInfo = @ {
                                            NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedStringFromTable(@"Request failed: unacceptable content-type: %@", @"AFNetworking", nil), [response MIMEType]],
                                            NSURLErrorFailingURLErrorKey:[response URL],
                                            AFNetworkingOperationFailingURLResponseErrorKey: response
@@ -101,7 +100,7 @@ static BOOL AFErrorOrUnderlyingErrorHasCode(NSError *error, NSInteger code) {
         }
 
         if (self.acceptableStatusCodes && ![self.acceptableStatusCodes containsIndex:(NSUInteger)response.statusCode]) {
-            NSDictionary *userInfo = @{
+            NSDictionary *userInfo = @ {
                                        NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedStringFromTable(@"Request failed: %@ (%ld)", @"AFNetworking", nil), [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], (long)response.statusCode],
                                        NSURLErrorFailingURLErrorKey:[response URL],
                                        AFNetworkingOperationFailingURLResponseErrorKey: response
@@ -124,8 +123,7 @@ static BOOL AFErrorOrUnderlyingErrorHasCode(NSError *error, NSInteger code) {
 
 - (id)responseObjectForResponse:(NSURLResponse *)response
                            data:(NSData *)data
-                          error:(NSError *__autoreleasing *)error
-{
+                          error:(NSError *__autoreleasing *)error {
     [self validateResponse:(NSHTTPURLResponse *)response data:data error:error];
 
     return data;
@@ -192,8 +190,7 @@ static BOOL AFErrorOrUnderlyingErrorHasCode(NSError *error, NSInteger code) {
 
 - (id)responseObjectForResponse:(NSURLResponse *)response
                            data:(NSData *)data
-                          error:(NSError *__autoreleasing *)error
-{
+                          error:(NSError *__autoreleasing *)error {
     if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
         if (AFErrorOrUnderlyingErrorHasCode(*error, NSURLErrorCannotDecodeContentData)) {
             return nil;
@@ -225,7 +222,7 @@ static BOOL AFErrorOrUnderlyingErrorHasCode(NSError *error, NSInteger code) {
                 return nil;
             }
         } else {
-            NSDictionary *userInfo = @{
+            NSDictionary *userInfo = @ {
                                        NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"Data failed decoding as a UTF-8 string", nil, @"AFNetworking"),
                                        NSLocalizedFailureReasonErrorKey: [NSString stringWithFormat:NSLocalizedStringFromTable(@"Could not decode string: %@", nil, @"AFNetworking"), responseString]
                                        };
@@ -296,8 +293,7 @@ static BOOL AFErrorOrUnderlyingErrorHasCode(NSError *error, NSInteger code) {
 
 - (id)responseObjectForResponse:(NSHTTPURLResponse *)response
                            data:(NSData *)data
-                          error:(NSError *__autoreleasing *)error
-{
+                          error:(NSError *__autoreleasing *)error {
     if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
         if (AFErrorOrUnderlyingErrorHasCode(*error, NSURLErrorCannotDecodeContentData)) {
             return nil;
@@ -341,8 +337,7 @@ static BOOL AFErrorOrUnderlyingErrorHasCode(NSError *error, NSInteger code) {
 
 - (id)responseObjectForResponse:(NSURLResponse *)response
                            data:(NSData *)data
-                          error:(NSError *__autoreleasing *)error
-{
+                          error:(NSError *__autoreleasing *)error {
     if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
         if (AFErrorOrUnderlyingErrorHasCode(*error, NSURLErrorCannotDecodeContentData)) {
             return nil;
@@ -400,8 +395,7 @@ static BOOL AFErrorOrUnderlyingErrorHasCode(NSError *error, NSInteger code) {
 }
 
 + (instancetype)serializerWithFormat:(NSPropertyListFormat)format
-                         readOptions:(NSPropertyListReadOptions)readOptions
-{
+                         readOptions:(NSPropertyListReadOptions)readOptions {
     AFPropertyListResponseSerializer *serializer = [[self alloc] init];
     serializer.format = format;
     serializer.readOptions = readOptions;
@@ -424,8 +418,7 @@ static BOOL AFErrorOrUnderlyingErrorHasCode(NSError *error, NSInteger code) {
 
 - (id)responseObjectForResponse:(NSURLResponse *)response
                            data:(NSData *)data
-                          error:(NSError *__autoreleasing *)error
-{
+                          error:(NSError *__autoreleasing *)error {
     if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
         if (AFErrorOrUnderlyingErrorHasCode(*error, NSURLErrorCannotDecodeContentData)) {
             return nil;
@@ -610,8 +603,7 @@ static UIImage * AFInflatedImageFromResponseWithDataAtScale(NSHTTPURLResponse *r
 
 - (id)responseObjectForResponse:(NSURLResponse *)response
                            data:(NSData *)data
-                          error:(NSError *__autoreleasing *)error
-{
+                          error:(NSError *__autoreleasing *)error {
     if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
         if (AFErrorOrUnderlyingErrorHasCode(*error, NSURLErrorCannotDecodeContentData)) {
             return nil;
@@ -695,8 +687,7 @@ static UIImage * AFInflatedImageFromResponseWithDataAtScale(NSHTTPURLResponse *r
 
 - (id)responseObjectForResponse:(NSURLResponse *)response
                            data:(NSData *)data
-                          error:(NSError *__autoreleasing *)error
-{
+                          error:(NSError *__autoreleasing *)error {
     for (id <AFURLResponseSerialization> serializer in self.responseSerializers) {
         if (![serializer isKindOfClass:[AFHTTPResponseSerializer class]]) {
             continue;

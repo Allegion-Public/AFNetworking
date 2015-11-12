@@ -187,7 +187,7 @@ static BOOL AFCertificateHostMatchesDomain(NSString *certificateHost, NSString *
 + (NSArray *)defaultPinnedCertificates {
     static NSArray *_defaultPinnedCertificates = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^ {
         NSBundle *bundle = [NSBundle bundleForClass:[self class]];
         NSArray *paths = [bundle pathsForResourcesOfType:@"cer" inDirectory:@"."];
         
@@ -253,8 +253,7 @@ static BOOL AFCertificateHostMatchesDomain(NSString *certificateHost, NSString *
 }
 
 - (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust
-                  forDomain:(NSString *)domain
-{
+                  forDomain:(NSString *)domain {
     BOOL shouldTrustServer = NO;
 
     if (self.SSLPinningMode == AFSSLPinningModeNone && self.allowInvalidCertificates) {

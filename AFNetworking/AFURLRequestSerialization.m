@@ -256,16 +256,14 @@ NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value) {
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
                                  URLString:(NSString *)URLString
-                                parameters:(NSDictionary *)parameters
-{
+                                parameters:(NSDictionary *)parameters {
     return [self requestWithMethod:method URLString:URLString parameters:parameters error:nil];
 }
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
                                  URLString:(NSString *)URLString
                                 parameters:(NSDictionary *)parameters
-                                     error:(NSError *__autoreleasing *)error
-{
+                                     error:(NSError *__autoreleasing *)error {
     NSParameterAssert(method);
     NSParameterAssert(URLString);
 
@@ -284,8 +282,7 @@ NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value) {
 - (NSMutableURLRequest *)multipartFormRequestWithMethod:(NSString *)method
                                               URLString:(NSString *)URLString
                                              parameters:(NSDictionary *)parameters
-                              constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
-{
+                              constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block {
     return [self multipartFormRequestWithMethod:method URLString:URLString parameters:parameters constructingBodyWithBlock:block error:nil];
 }
 
@@ -293,8 +290,7 @@ NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value) {
                                               URLString:(NSString *)URLString
                                              parameters:(NSDictionary *)parameters
                               constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
-                                                  error:(NSError *__autoreleasing *)error
-{
+                                                  error:(NSError *__autoreleasing *)error {
     NSParameterAssert(method);
     NSParameterAssert(![method isEqualToString:@"GET"] && ![method isEqualToString:@"HEAD"]);
 
@@ -330,8 +326,7 @@ NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value) {
 
 - (NSURLRequest *)requestBySerializingRequest:(NSURLRequest *)request
                                withParameters:(id)parameters
-                                        error:(NSError *__autoreleasing *)error
-{
+                                        error:(NSError *__autoreleasing *)error {
     NSParameterAssert(request);
 
     NSMutableURLRequest *mutableRequest = [request mutableCopy];
@@ -484,8 +479,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
 @implementation AFStreamingMultipartFormData
 
 - (id)initWithURLRequest:(NSMutableURLRequest *)urlRequest
-          stringEncoding:(NSStringEncoding)encoding
-{
+          stringEncoding:(NSStringEncoding)encoding {
     self = [super init];
     if (!self) {
         return nil;
@@ -501,8 +495,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
 
 - (BOOL)appendPartWithFileURL:(NSURL *)fileURL
                          name:(NSString *)name
-                        error:(NSError * __autoreleasing *)error
-{
+                        error:(NSError * __autoreleasing *)error {
     NSParameterAssert(fileURL);
     NSParameterAssert(name);
 
@@ -516,8 +509,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
                          name:(NSString *)name
                      fileName:(NSString *)fileName
                      mimeType:(NSString *)mimeType
-                        error:(NSError * __autoreleasing *)error
-{
+                        error:(NSError * __autoreleasing *)error {
     NSParameterAssert(fileURL);
     NSParameterAssert(name);
     NSParameterAssert(fileName);
@@ -563,8 +555,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
                              name:(NSString *)name
                          fileName:(NSString *)fileName
                            length:(int64_t)length
-                         mimeType:(NSString *)mimeType
-{
+                         mimeType:(NSString *)mimeType {
     NSParameterAssert(name);
     NSParameterAssert(fileName);
     NSParameterAssert(mimeType);
@@ -588,8 +579,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
 - (void)appendPartWithFileData:(NSData *)data
                           name:(NSString *)name
                       fileName:(NSString *)fileName
-                      mimeType:(NSString *)mimeType
-{
+                      mimeType:(NSString *)mimeType {
     NSParameterAssert(name);
     NSParameterAssert(fileName);
     NSParameterAssert(mimeType);
@@ -602,8 +592,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
 }
 
 - (void)appendPartWithFormData:(NSData *)data
-                          name:(NSString *)name
-{
+                          name:(NSString *)name {
     NSParameterAssert(name);
 
     NSMutableDictionary *mutableHeaders = [NSMutableDictionary dictionary];
@@ -613,8 +602,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
 }
 
 - (void)appendPartWithHeaders:(NSDictionary *)headers
-                         body:(NSData *)body
-{
+                         body:(NSData *)body {
     NSParameterAssert(body);
 
     AFHTTPBodyPart *bodyPart = [[AFHTTPBodyPart alloc] init];
@@ -628,8 +616,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
 }
 
 - (void)throttleBandwidthWithPacketSize:(NSUInteger)numberOfBytes
-                                  delay:(NSTimeInterval)delay
-{
+                                  delay:(NSTimeInterval)delay {
     self.bodyStream.numberOfBytesInPacket = numberOfBytes;
     self.bodyStream.delay = delay;
 }
@@ -702,8 +689,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
 #pragma mark - NSInputStream
 
 - (NSInteger)read:(uint8_t *)buffer
-        maxLength:(NSUInteger)length
-{
+        maxLength:(NSUInteger)length {
     if ([self streamStatus] == NSStreamStatusClosed) {
         return 0;
     }
@@ -738,8 +724,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
 }
 
 - (BOOL)getBuffer:(__unused uint8_t **)buffer
-           length:(__unused NSUInteger *)len
-{
+           length:(__unused NSUInteger *)len {
     return NO;
 }
 
@@ -769,18 +754,15 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
 }
 
 - (BOOL)setProperty:(__unused id)property
-             forKey:(__unused NSString *)key
-{
+             forKey:(__unused NSString *)key {
     return NO;
 }
 
 - (void)scheduleInRunLoop:(__unused NSRunLoop *)aRunLoop
-                  forMode:(__unused NSString *)mode
-{}
+                  forMode:(__unused NSString *)mode {}
 
 - (void)removeFromRunLoop:(__unused NSRunLoop *)aRunLoop
-                  forMode:(__unused NSString *)mode
-{}
+                  forMode:(__unused NSString *)mode {}
 
 - (unsigned long long)contentLength {
     unsigned long long length = 0;
@@ -794,12 +776,10 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
 #pragma mark - Undocumented CFReadStream Bridged Methods
 
 - (void)_scheduleInCFRunLoop:(__unused CFRunLoopRef)aRunLoop
-                     forMode:(__unused CFStringRef)aMode
-{}
+                     forMode:(__unused CFStringRef)aMode {}
 
 - (void)_unscheduleFromCFRunLoop:(__unused CFRunLoopRef)aRunLoop
-                         forMode:(__unused CFStringRef)aMode
-{}
+                         forMode:(__unused CFStringRef)aMode {}
 
 - (BOOL)_setCFClientFlags:(__unused CFOptionFlags)inFlags
                  callback:(__unused CFReadStreamClientCallBack)inCallback
@@ -930,8 +910,7 @@ typedef enum {
 }
 
 - (NSInteger)read:(uint8_t *)buffer
-        maxLength:(NSUInteger)length
-{
+        maxLength:(NSUInteger)length {
     NSInteger totalNumberOfBytesRead = 0;
 
     if (_phase == AFEncapsulationBoundaryPhase) {
@@ -969,8 +948,7 @@ typedef enum {
 
 - (NSInteger)readData:(NSData *)data
            intoBuffer:(uint8_t *)buffer
-            maxLength:(NSUInteger)length
-{
+            maxLength:(NSUInteger)length {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wgnu"
     NSRange range = NSMakeRange((NSUInteger)_phaseReadOffset, MIN([data length] - ((NSUInteger)_phaseReadOffset), length));
@@ -1041,8 +1019,7 @@ typedef enum {
     return [self serializerWithWritingOptions:0];
 }
 
-+ (instancetype)serializerWithWritingOptions:(NSJSONWritingOptions)writingOptions
-{
++ (instancetype)serializerWithWritingOptions:(NSJSONWritingOptions)writingOptions {
     AFJSONRequestSerializer *serializer = [[self alloc] init];
     serializer.writingOptions = writingOptions;
 
@@ -1053,8 +1030,7 @@ typedef enum {
 
 - (NSURLRequest *)requestBySerializingRequest:(NSURLRequest *)request
                                withParameters:(id)parameters
-                                        error:(NSError *__autoreleasing *)error
-{
+                                        error:(NSError *__autoreleasing *)error {
     NSParameterAssert(request);
 
     if ([self.HTTPMethodsEncodingParametersInURI containsObject:[[request HTTPMethod] uppercaseString]]) {
@@ -1120,8 +1096,7 @@ typedef enum {
 }
 
 + (instancetype)serializerWithFormat:(NSPropertyListFormat)format
-                        writeOptions:(NSPropertyListWriteOptions)writeOptions
-{
+                        writeOptions:(NSPropertyListWriteOptions)writeOptions {
     AFPropertyListRequestSerializer *serializer = [[self alloc] init];
     serializer.format = format;
     serializer.writeOptions = writeOptions;
@@ -1133,8 +1108,7 @@ typedef enum {
 
 - (NSURLRequest *)requestBySerializingRequest:(NSURLRequest *)request
                                withParameters:(id)parameters
-                                        error:(NSError *__autoreleasing *)error
-{
+                                        error:(NSError *__autoreleasing *)error {
     NSParameterAssert(request);
 
     if ([self.HTTPMethodsEncodingParametersInURI containsObject:[[request HTTPMethod] uppercaseString]]) {

@@ -78,9 +78,9 @@ static void AFNetworkReachabilityCallback(SCNetworkReachabilityRef __unused targ
     }
 
 
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^ {
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter postNotificationName:AFNetworkingReachabilityDidChangeNotification object:nil userInfo:@{ AFNetworkingReachabilityNotificationStatusItem: @(status) }];
+        [notificationCenter postNotificationName:AFNetworkingReachabilityDidChangeNotification object:nil userInfo:@ { AFNetworkingReachabilityNotificationStatusItem: @(status) }];
     });
 }
 
@@ -106,7 +106,7 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 + (instancetype)sharedManager {
     static AFNetworkReachabilityManager *_sharedManager = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^ {
         struct sockaddr_in address;
         bzero(&address, sizeof(address));
         address.sin_len = sizeof(address);
@@ -200,11 +200,11 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
         case AFNetworkReachabilityForAddress:
         case AFNetworkReachabilityForAddressPair:
         default: {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^ {
                 SCNetworkReachabilityFlags flags;
                 SCNetworkReachabilityGetFlags(self.networkReachability, &flags);
                 AFNetworkReachabilityStatus status = AFNetworkReachabilityStatusForFlags(flags);
-                dispatch_async(dispatch_get_main_queue(), ^{
+                dispatch_async(dispatch_get_main_queue(), ^ {
                     callback(status);
                 });
             });

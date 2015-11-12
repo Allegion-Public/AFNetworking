@@ -208,7 +208,7 @@ extern NSTimeInterval const kAFUploadStream3GSuggestedDelay;
 @protocol AFMultipartFormData
 
 /**
- Appends the HTTP header `Content-Disposition: file; filename=#{generated filename}; name=#{name}"` and `Content-Type: #{generated mimeType}`, followed by the encoded file data and the multipart form boundary.
+ Appends the HTTP header `Content-Disposition: file; filename=# {generated filename}; name=# {name}"` and `Content-Type: # {generated mimeType}`, followed by the encoded file data and the multipart form boundary.
 
  The filename and MIME type for this data in the form will be automatically generated, using the last path component of the `fileURL` and system associated MIME type for the `fileURL` extension, respectively.
 
@@ -223,7 +223,7 @@ extern NSTimeInterval const kAFUploadStream3GSuggestedDelay;
                         error:(NSError * __autoreleasing *)error;
 
 /**
- Appends the HTTP header `Content-Disposition: file; filename=#{filename}; name=#{name}"` and `Content-Type: #{mimeType}`, followed by the encoded file data and the multipart form boundary.
+ Appends the HTTP header `Content-Disposition: file; filename=# {filename}; name=# {name}"` and `Content-Type: # {mimeType}`, followed by the encoded file data and the multipart form boundary.
 
  @param fileURL The URL corresponding to the file whose content will be appended to the form. This parameter must not be `nil`.
  @param name The name to be associated with the specified data. This parameter must not be `nil`.
@@ -240,7 +240,7 @@ extern NSTimeInterval const kAFUploadStream3GSuggestedDelay;
                         error:(NSError * __autoreleasing *)error;
 
 /**
- Appends the HTTP header `Content-Disposition: file; filename=#{filename}; name=#{name}"` and `Content-Type: #{mimeType}`, followed by the data from the input stream and the multipart form boundary.
+ Appends the HTTP header `Content-Disposition: file; filename=# {filename}; name=# {name}"` and `Content-Type: # {mimeType}`, followed by the data from the input stream and the multipart form boundary.
 
  @param inputStream The input stream to be appended to the form data
  @param name The name to be associated with the specified input stream. This parameter must not be `nil`.
@@ -255,7 +255,7 @@ extern NSTimeInterval const kAFUploadStream3GSuggestedDelay;
                          mimeType:(NSString *)mimeType;
 
 /**
- Appends the HTTP header `Content-Disposition: file; filename=#{filename}; name=#{name}"` and `Content-Type: #{mimeType}`, followed by the encoded file data and the multipart form boundary.
+ Appends the HTTP header `Content-Disposition: file; filename=# {filename}; name=# {name}"` and `Content-Type: # {mimeType}`, followed by the encoded file data and the multipart form boundary.
 
  @param data The data to be encoded and appended to the form data.
  @param name The name to be associated with the specified data. This parameter must not be `nil`.
@@ -268,7 +268,7 @@ extern NSTimeInterval const kAFUploadStream3GSuggestedDelay;
                       mimeType:(NSString *)mimeType;
 
 /**
- Appends the HTTP headers `Content-Disposition: form-data; name=#{name}"`, followed by the encoded data and the multipart form boundary.
+ Appends the HTTP headers `Content-Disposition: form-data; name=# {name}"`, followed by the encoded data and the multipart form boundary.
 
  @param data The data to be encoded and appended to the form data.
  @param name The name to be associated with the specified data. This parameter must not be `nil`.
